@@ -14,7 +14,7 @@
 
 Aqui hay que poner la descripción de la API.
 
-## Pasos a seguir para utilizar el repositorio
+## Ejecutar aplicación
 
 1. Clonar el proyecto
 2. Instalar dependencias
@@ -32,41 +32,18 @@ $ docker-compose up -d
 $ yarn run start:dev
 ```
 
-
-## Running the app
-
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
-
 ## Git
 
 ```bash
-git .
-git commit -m "Respaldando todo hasta ahora"
+git add .
+git commit -m "Primer commit"
 git remote add origin https://github.com/amnavarrodev/MySampleShopNestTypeORM.git
 git branch -M main
 git push -u origin main
+
+git add .
+git commit -m "Segundo commit"
+git push
 ```
 
 ## Support
