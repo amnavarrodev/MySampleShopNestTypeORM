@@ -10,8 +10,8 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { Product } from './entities/product.entity';
 import { validate as isUUID } from "uuid";
+import { Product, ProductImage } from './entities';
 
 @Injectable()
 export class ProductsService {
@@ -19,14 +19,20 @@ export class ProductsService {
 
   constructor(
     @InjectRepository(Product) private productRepository: Repository<Product>,
+    @InjectRepository(ProductImage) private productImageRepository: Repository<ProductImage>,
   ) {}
 
   async create(createProductDto: CreateProductDto) {
     try {
-      const product = await this.productRepository.create(createProductDto);
+      const {images = [], ...productDetails} = createProductDto;
+
+      const product = await this.productRepository.create({
+        ...productDetails,
+        images: images?.map(image => this.productImageRepository.create({url: image})), 
+      });
       await this.productRepository.save(product);
 
-      return product;
+      return {...product, images};
     } catch (error) {
       this.handleDBException(error);
     }
@@ -69,7 +75,8 @@ export class ProductsService {
 
     const product = await this.productRepository.preload({
       id: id,
-      ...updateProductDto
+      ...updateProductDto,
+      images: [],
     });
 
     if (!product) {
