@@ -31,6 +31,10 @@ $ docker-compose up -d
 ```bash
 $ yarn run start:dev
 ```
+7. Ejecutar Seed
+```bash
+http://localhost:3000/api/seed
+```
 
 ## Git
 
