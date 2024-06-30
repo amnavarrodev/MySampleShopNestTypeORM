@@ -90,15 +90,9 @@ export class ProductsService {
   async update(id: string, updateProductDto: UpdateProductDto) {
 
     const {images, ...toUpdate} = updateProductDto;
+    const product = await this.productRepository.preload({ id, ...toUpdate});
 
-    const product = await this.productRepository.preload({
-      id,
-      ...toUpdate
-    });    
-
-    if (!product) {
-      throw new NotFoundException(`Product with id ${id} not found`);
-    }
+    if (!product) throw new NotFoundException(`Product with id ${id} not found`);
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
@@ -143,5 +137,17 @@ export class ProductsService {
     throw new InternalServerErrorException(
       'Unexpected error, check server logs',
     );
+  }
+
+  async deleteAllProducts() {
+    const query = this.productRepository.createQueryBuilder('product');
+    try {
+      return await query
+        .delete()
+        .where({})
+        .execute();
+    } catch (error) {
+      this.handleDBExceptions(error);
+    }
   }
 }
